@@ -7,37 +7,43 @@ import Control.Monad.Aff (Aff)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
 import Control.Monad.Eff.Exception (EXCEPTION)
-import Data.Array (length, zip, (..))
+import Data.Array (filter, length, zip, (..))
 import Data.Foldable (for_)
 import Data.Maybe (Maybe(Just, Nothing))
+import Data.String (contains, Pattern(Pattern))
 import Data.Tuple (Tuple(Tuple))
 import Pux (EffModel, start)
+import Pux.DOM.Events (onChange, targetValue)
 import Pux.DOM.HTML (HTML)
 import Pux.DOM.HTML.Attributes (style)
 import Pux.Renderer.React (renderToDOM)
 import Signal (constant)
 import Signal.Channel (CHANNEL)
-import Text.Smolder.HTML (a, div, h1, span)
-import Text.Smolder.HTML.Attributes (href)
-import Text.Smolder.Markup (text, (!))
+import Text.Smolder.HTML (a, div, h1, span, input)
+import Text.Smolder.HTML.Attributes (href, type')
+import Text.Smolder.Markup (text, (!), (#!))
 
 import HackerNewsApi (Story, hackerNewsStories)
 
 data Event
   = LoadFrontPage
   | SetStories (Array Story)
+  | FilterTextChange String
 
-type State = { stories :: Array Story }
+type State = { stories :: Array Story, filterText :: String }
 
 initialState :: State
-initialState = { stories: [] }
+initialState = { stories: [], filterText: "" }
 
 foldp :: forall eff. Event -> State -> EffModel State Event (console :: CONSOLE | eff)
-foldp event@(LoadFrontPage) state = 
+foldp (LoadFrontPage) state =
   { state
   , effects: [loadHackerNewsStories] }
-foldp event@(SetStories stories) state =
+foldp (SetStories stories) state =
   { state: state { stories = stories }
+  , effects: [] }
+foldp (FilterTextChange text) state =
+  { state: state { filterText = text }
   , effects: [] }
 
 loadHackerNewsStories :: forall e. Aff (console :: CONSOLE | e) (Maybe Event)
@@ -45,10 +51,12 @@ loadHackerNewsStories = do
   pure $ Just (SetStories hackerNewsStories)
 
 view :: State -> HTML Event
-view {stories} =
+view {stories, filterText} =
   div do
     h1 ! style headerStyle $ do
       text "Hacker Reader"
+    div do
+      input ! type' "text" #! onChange (\ev -> FilterTextChange $ targetValue ev)
     div ! style contentStyle $ do
       div $ for_ storiesWithRank storyItem
   where
@@ -57,12 +65,14 @@ view {stories} =
       backgroundColor (rgb 255 102 0)
       margin (px 0.0) (px 0.0) (px 0.0) (px 0.0)
       padding (px 10.0) (px 10.0) (px 10.0) (px 10.0)
-      
+
     contentStyle :: CSS
     contentStyle = do
       padding (px 10.0) (px 10.0) (px 10.0) (px 10.0)
-      
-    storiesWithRank = zip (1 .. (length stories + 1)) stories
+
+    storiesWithRank = zip (1 .. (length stories + 1)) filteredStories
+    filteredStories = filter (\ele -> contains (Pattern filterText) ele.title) stories
+    {--orderedStories = sortBy (\ele -> ) --}
 
 storyItem :: Tuple Int Story -> HTML Event
 storyItem (Tuple rank story) =
@@ -90,26 +100,26 @@ dividerStyle :: CSS
 dividerStyle = do
   marginLeft (px 4.0)
   marginRight (px 4.0)
-  
+
 pointsStyle :: CSS
 pointsStyle = do
   fontSize (px 12.0)
   paddingTop (px 2.0)
   display inline
-  
+
 authorStyle :: CSS
 authorStyle = do
   fontSize (px 12.0)
   paddingTop (px 2.0)
   display inline
-  
+
 numCommentsStyle :: CSS
 numCommentsStyle = do
   marginRight (px 5.0)
   fontSize (px 12.0)
   paddingTop (px 2.0)
   display inline
-  
+
 main :: forall eff. Eff (channel :: CHANNEL, console :: CONSOLE, exception :: EXCEPTION | eff) Unit
 main = do
   app <- start

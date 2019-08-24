@@ -16,8 +16,8 @@ import Pux.DOM.HTML.Attributes (style)
 import Pux.Renderer.React (renderToDOM)
 import Signal (constant)
 import Signal.Channel (CHANNEL)
-import Text.Smolder.HTML (div, h1)
-import Text.Smolder.Markup (text, (!))
+import Text.Smolder.HTML (div, h1, a, span, ol, li)
+import Text.Smolder.Markup (text, (!), attribute)
 
 import HackerNewsApi (Story, hackerNewsStories)
 
@@ -48,25 +48,31 @@ view {stories} =
     h1 ! style headerStyle $ do
       text "Hacker Reader"
     div ! style contentStyle $ do
-      div $ for_ stories storyItem
+      div $ for_ storiesWithRank {storyItem, rank}
   where
     headerStyle :: CSS
     headerStyle = do
       backgroundColor (rgb 255 102 0)
       margin (px 0.0) (px 0.0) (px 0.0) (px 0.0)
       padding (px 10.0) (px 10.0) (px 10.0) (px 10.0)
-      
+
     contentStyle :: CSS
     contentStyle = do
       padding (px 10.0) (px 10.0) (px 10.0) (px 10.0)
-      
+
     storiesWithRank = zip (1 .. (length stories + 1)) stories
 
-storyItem :: Story -> HTML Event
-storyItem story =
-  div ! style (marginBottom (px 5.0)) $ do
-    div $ text story.objectID
-  
+storyItem :: Story Int -> HTML Event
+storyItem story _ =
+  ol $ do
+    li ! style (marginBottom (px 5.0)) $ do
+      div $ text story.objectID
+      div $ do
+        a ! attribute "href" story.url $ text (story.title)
+      div $ text ("By " <> story.author)
+      div $ do
+        span $ text ("Points: " <> show story.points)
+
 main :: forall eff. Eff (channel :: CHANNEL, console :: CONSOLE, exception :: EXCEPTION | eff) Unit
 main = do
   app <- start

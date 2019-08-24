@@ -1,50 +1,50 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>A Working Stiff's Guide to PureScript</title>
+    <title>A Working Stiff's Guide to PureScript</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/night.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/night.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="css/highlightjs/solarized-dark.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="css/highlightjs/solarized-dark.css">
 
-		<!-- Custom styles -->
-		<link rel="stylesheet" href="css/styles.css">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="css/styles.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
           <h3>A Working Stiff's Guide to</h3>
           <h1 class="yellow">PureScript</h1>
           <br />
           <h3>By Nicholas Kariniemi</h3>
         </section>
         <section data-markdown>
-	<textarea data-template>
-		### Where to go for help
+  <textarea data-template>
+    ### Where to go for help
 
   [PureScript by Example (book)](https://leanpub.com/purescript/read)
 
   [Language Reference](https://github.com/purescript/documentation/blob/master/language/README.md)
 
   [Pursuit (language/library docs)](https://pursuit.purescript.org/)
-	</textarea>
+  </textarea>
         </section>
-				<section>
+        <section>
           <h3>PureScript</h3>
           <h4>strongly-typed and functional (a la Haskell)</h4>
           <h4>strict (unlike Haskell)</h4>
@@ -61,21 +61,21 @@ import Control.Monad.Eff.Console (log)
 main = log "Hello, World!"
 </code></pre>
         </section>
-				<section>
+        <section>
           <section>
             <h3>Basic types and functions</h3>
           </section>
           <section>
             <h3>REPL</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 $ npm run repl
 > import Prelude
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Basic types: Primitives</h3>
  
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 $ psci
 > :type 1.0
 Number
@@ -91,11 +91,11 @@ String
 
 > :type 'a'
 Char
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Basic types: Arrays</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 > :type [1, 2, 3]
 Array Int
 
@@ -111,29 +111,29 @@ myList = [1, 2, 3, 4]
 
 colors :: Array String
 colors = ["red", "orange", "yellow", "green"]
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Basic types: Records</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 user :: { name :: String, id :: Int }
 user = {name: "Joe", id: 1}
-				</code></pre>
+        </code></pre>
         <p>Records correspond to JavaScript objects</p>
           </section>
           <section>
             <h3>Functions are curried</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 add :: Int -> Int -> Int
 add x y = x + y
 
 add2 :: Int -> Int
 add2 = add 2
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Everything is a pure function call</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 -- These are all equivalent:
 sum :: Int -> Int -> Int
 sum x y = x + y
@@ -146,14 +146,14 @@ sum x y = add x y
 
 sum :: Int -> Int -> Int
 sum x y = x `add` y
-				</code></pre>
+        </code></pre>
             <p>Operators are infix function calls</p>
             <p>They all have a plain text alias e.g. + and add</p>
           </section>
           <section>
             <h3>The Dollar Sign: $</h3>
             <p>"everything after goes in parentheses"</p>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 -- These are equivalent:
 main = log $ "User: " <> "Foo"
 main = log ("User: " <> "Foo")
@@ -161,12 +161,12 @@ main = log ("User: " <> "Foo")
 -- These are equivalent:
 main = log $ "User: " <> show $ 1 + 5
 main = log ("User: " <> show (1 + 5))
-				</code></pre>
+        </code></pre>
           <p>(<> is for appending)</p>
           </section>
           <section>
             <h3>Type synonyms</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 type Address =
   { street :: String
   , city   :: String
@@ -174,11 +174,11 @@ type Address =
   }
 
 type AddressBook = Array Address
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Type constructors</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 nums :: Array Int
 nums = [4, 3, 22, 1, 7]
 
@@ -187,7 +187,7 @@ Type -> Type
 
 > :kind Array Int
 Type
-				</code></pre>
+        </code></pre>
             <p>Array is a <i>type constructor</i></p>
           </section>
         </section>
@@ -224,46 +224,46 @@ Type
           <section>
             <h3>Prelude module</h3>
             <p>Bower package: purescript-prelude</p>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 -- Most source files start like this:
 module Foo where
 
 import Prelude
-				</code></pre>
-				<pre><code class="hljs" data-trim>
+        </code></pre>
+        <pre><code class="hljs" data-trim>
 -- Useful things like:
 map :: forall a b. (a -> b) -> f a -> f b     -- aka <$>
 add :: forall a. Semiring a => a -> a -> a    -- aka +
 mul :: forall a. Semiring a => a -> a -> a    -- aka *
 eq :: forall a. Eq a => a -> a -> Boolean     -- aka ==
 notEq :: forall a. Eq a => a -> a -> Boolean  -- aka /=
-				</code></pre>
+        </code></pre>
               <p>Prelude is your "standard library"</p>
           </section>
           <section>
             <h3>Data.Array module</h3>
         <p>Bower package: purescript-arrays</p>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 insert :: forall a. Ord a => a -> Array a -> Array a
 length :: forall a. Array a -> Int
 filter :: forall a. (a -> Boolean) -> Array a -> Array a
 union :: forall a. Eq a => Array a -> Array a -> Array a
 zip :: forall a b. Array a -> Array b -> Array (Tuple a b)
-				</code></pre>
+        </code></pre>
           </section>
         </section>
-				<section>
+        <section>
           <section>
             <h3>Exercise #1: Types and Functions</h3>
           </section>
         </section>
-				<section>
+        <section>
           <section>
             <h3>Pattern matching and ADTs</h3>
           </section>
           <section>
             <h3>Pattern matching on functions</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 gcd :: Int -> Int -> Int
 gcd n 0 = n
 gcd 0 m = m
@@ -277,11 +277,11 @@ gcd n 0 = n
 gcd 0 n = n
 gcd n m | n > m     = gcd (n - m) m
         | otherwise = gcd n (m - n)
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Pattern matching: arrays</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 isEmpty :: forall a. Array a -> Boolean
 isEmpty [] = true
 isEmpty _ = false
@@ -289,21 +289,21 @@ isEmpty _ = false
 takeFive :: Array Int -> Int
 takeFive [0, 1, a, b, _] = a * b
 takeFive _ = 0
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Pattern matching: records</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 showPerson :: { first :: String, last :: String } -> String
 showPerson { first: x, last: y } = y <> ", " <> x
 
 showPerson :: { first :: String, last :: String } -> String
 showPerson { first, last } = first <> ", " <> last
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Pattern matching: case</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 isEmpty :: forall a. Array a -> Boolean
 isEmpty [] = true
 isEmpty _ = false
@@ -313,11 +313,11 @@ isEmpty :: forall a. Array a -> Boolean
 isEmpty arr = case arr of
   [] -> true
   _ -> false
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Algebraic Data Types</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 --   v--type
 data Filter = ByTitle | ByDate | ByRelevance
 --            ^ data constructors
@@ -328,11 +328,11 @@ applyFilter ByTitle =
 applyFilter ByDate =
 applyFilter ByRelevance =
 --          ^ but you can pattern-match on the data constructor
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>ADTs with data</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 data Shape
   = Circle Point Number
   | Rectangle Point Number Number
@@ -344,12 +344,12 @@ draw (Circle pt radius) =
 draw (Rectangle pt width height) = 
 draw (Line startPt endPt) = 
 draw (Text pt text) = 
-				</code></pre>
+        </code></pre>
           </section>
 
           <section>
             <h3>Common ADTs: Maybe and Either</h3>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 data Maybe a = Nothing | Just a
 data Either a b = Left a | Right b
 
@@ -362,14 +362,14 @@ decodeJSON :: String -> Either ValidationErrors User
 show :: Either ValidationErrors User -> String
 show (Right user) = user.firstName <> user.lastName
 show (Left errors) = "Errors: " <> show errors
-				</code></pre>
+        </code></pre>
           </section>
 
           <section>
             <h3>Newtype</h3>
           <p>For ADTs with <i>one</i> constructor that takes <i>one</i> type</p>
           <p>At run time is same as underlying type</p>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 newtype PhoneNumber = PhoneNumber String
 newtype UserId = UserId Int
 
@@ -378,16 +378,16 @@ data PhoneNumber = PhoneNumber String
 data UserId = UserId Int
 
 -- (except at run time)
-				</code></pre>
+        </code></pre>
           </section>
 
         </section>
-				<section>
+        <section>
           <section>
             <h3>Exercise #2: Pattern matching and ADTs</h3>
           </section>
         </section>
-				<section>
+        <section>
           <section>
             <h3>Type classes</h4>
           </section>
@@ -397,14 +397,14 @@ data UserId = UserId Int
             <p>Tells what functions can be called on something</p>
             <p>Then you can define functions that work with any value that has an instance for a type class</p>
             <p>"What things can I do with this value"</p>
-				<pre><code class="hljs" data-trim>
-				</code></pre>
+        <pre><code class="hljs" data-trim>
+        </code></pre>
           </section>
           <section>
             <h3>Common type classes: Show</h4>
             <p>Things that can be printed to a string</p>
             <p>E.g. Booleans, Ints</p>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 class Show a where
   show :: a -> String
 
@@ -416,13 +416,13 @@ instance showBoolean :: Show Boolean where
 -- So you can define functions like this:
 formatMsg :: forall a. (Show a) => a -> String
 formatMsg val = "search-service: " <> show val
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Common type classes: Eq</h4>
             <p>Things that can be tested for equality</p>
             <p>E.g. Ints, Strings</p>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 class Eq a where
   eq :: a -> a -> Boolean
 
@@ -439,13 +439,13 @@ false
 > 0.1 + 0.2 == 0.3
 false
 
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Common type classes: Ord</h4>
             <p>Things that can be sorted</p>
             <p>E.g. strings, numbers</p>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 data Ordering = LT | EQ | GT
 
 class Eq a <= Ord a where
@@ -465,13 +465,13 @@ LT
 true
 > "b" `compare` "a"
 GT
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Common type classes: Semigroups</h4>
             <p>Things that can be appended together</p>
             <p>E.g. strings, arrays</p>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 class Semigroup a where
   append :: a -> a -> a
 
@@ -488,13 +488,13 @@ append = concatArray
 
 > [1,2] <> [3,4]
 [1,2,3,4]
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Common type classes: Functor</h4>
             <p>Things that can be mapped over</p>
             <p>E.g. arrays, optional values</p>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 class Functor f where
   map :: forall a b. (a -> b) -> f a -> f b
 
@@ -512,12 +512,12 @@ Nothing
 
 > map ((+) 1) (Left "error" :: Either String Int)
 (Left "error")
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Common type classes: Encode and Decode</h4>
             <p>Things that can be encoded to/decoded from JSON</p>
-				<pre><code class="hljs" data-trim>
+        <pre><code class="hljs" data-trim>
 -- Take a value, encode to JSON
 class Encode a where
   encode :: a -> Foreign
@@ -526,7 +526,7 @@ class Encode a where
 class Decode a where
   decode :: Foreign -> Except MultipleErrors a
 
-				</code></pre>
+        </code></pre>
           </section>
           <section>
             <h3>Type classes are core to PureScript</h4>
@@ -557,12 +557,12 @@ class Decode a where
               </ul>
           </section>
         </section>
-				<section>
+        <section>
           <section>
             <h3>Exercise #3: Type classes</h3>
           </section>
         </section>
-				<section>
+        <section>
           <section>
             <h3>Generic Deriving</h3>
           </section>
@@ -615,40 +615,40 @@ show x = GShow.genericShow x
 </code></pre>
           </section>
         </section>
-				<section>
+        <section>
           <section>
             <h3>Exercise #4: Generic Deriving</h3>
           </section>
         </section>
-				<section>
+        <section>
           <section>
             <h3>Exercise #5: Decoding JSON</h3>
           </section>
         </section>
-				<section>
+        <section>
           <section>
             <h3>Exercise #6: Aff monad</h3>
           </section>
         </section>
-				<section>
+        <section>
           <h3>Foreign Function Interface</h3>
         </section>
-				<section>
+        <section>
           <section>
             <h3>Exercise #7: Foreign Function Interface</h3>
           </section>
         </section>
-			</div>
-		</div>
+      </div>
+    </div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
         history: true,
   
         width: 960,
@@ -661,23 +661,23 @@ show x = GShow.genericShow x
         minScale: 0.1,
         maxScale: 1.5,
 
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js',
-						async: true,
-						callback: function() {
-							hljs.configure({
-								tabReplace: ' ',
-								useBR: false,
-								languages: ['haskell']
-							});
-							hljs.initHighlightingOnLoad();
-						}
-					}
-				]
-			});
-		</script>
-	</body>
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js',
+            async: true,
+            callback: function() {
+              hljs.configure({
+                tabReplace: ' ',
+                useBR: false,
+                languages: ['haskell']
+              });
+              hljs.initHighlightingOnLoad();
+            }
+          }
+        ]
+      });
+    </script>
+  </body>
 </html>
